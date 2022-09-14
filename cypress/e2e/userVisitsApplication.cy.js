@@ -11,6 +11,18 @@ describe("When the user visits the application", () => {
   });
 
   it("is expected to render a list of star wars characters", () => {
-    cy.get("[data-cy=star-wars-chars]").should("have.length", 6);
+    cy.get("[data-cy=star-wars-chars]").children().should("have.length", 6);
+  });
+
+  it("is expected to show a loading message while fetching data", () => {
+    let resolveReq;
+    cy.intercept("GET", "**/api/people", (req) => {
+      return new Cypress.Promise((resolve) => {
+        resolveReq = resolve;
+      }).then(req.reply);
+    });
+    cy.visit("/");
+    cy.get("[data-cy=loading-message")
+      .should("contain.text", "Loading...")
   });
 });

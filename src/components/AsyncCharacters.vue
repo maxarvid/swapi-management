@@ -14,7 +14,6 @@ const getCharactersData = async () => {
 };
 
 const characters = await getCharactersData();
-debugger;
 </script>
 
 <template>

@@ -1,14 +1,30 @@
-import { fileURLToPath, URL } from 'node:url'
+import { fileURLToPath, URL } from "node:url";
 
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
+import { defineConfig } from "vite";
+import vue from "@vitejs/plugin-vue";
 
-// https://vitejs.dev/config/
+const removeDataCyTestAttrs = (node) => {
+  if (node.type === 1) {
+    node.props = node.props.filter((prop) =>
+      prop.type === 6 ? prop.name !== "data-cy" : true
+    );
+  }
+};
+
 export default defineConfig({
-  plugins: [vue()],
+  plugins: [
+    vue({
+      template: {
+        compilerOptions: {
+          nodeTransforms:
+            process.env.NODE_ENV === "production" ? [removeDataCyTestAttrs] : [],
+        },
+      },
+    }),
+  ],
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
-    }
-  }
-})
+      "@": fileURLToPath(new URL("./src", import.meta.url)),
+    },
+  },
+});

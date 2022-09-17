@@ -22,7 +22,13 @@ describe("When the user visits the application", () => {
       }).then(req.reply);
     });
     cy.visit("/");
-    cy.get("[data-cy=loading-message")
-      .should("contain.text", "Loading...")
+    cy.get("[data-cy=loading-message").should("contain.text", "Loading...");
+  });
+
+  it("is expected to list Luke Skywalker as the first character", () => {
+    cy.get("[data-cy=star-wars-chars")
+      .children()
+      .first()
+      .should("contain.text", "Luke Skywalker");
   });
 });

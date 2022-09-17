@@ -1,12 +1,20 @@
 <script setup>
+import { ref } from "vue";
 import axios from "axios";
 
+const error = ref(false);
+
 const getCharactersData = async () => {
-  const { data } = await axios.get("https://swapi.dev/api/people");
-  return data.results;
+  try {
+    const { data } = await axios.get("https://swapi.dev/api/people");
+    return data.results;
+  } catch {
+    error.value = true;
+  }
 };
 
 const characters = await getCharactersData();
+debugger;
 </script>
 
 <template>
@@ -15,6 +23,9 @@ const characters = await getCharactersData();
       <h3>{{ character.name }}</h3>
     </li>
   </ul>
+  <p v-if="error" data-cy="error-message">
+    Network error, please try again later...
+  </p>
 </template>
 
 <style scoped></style>

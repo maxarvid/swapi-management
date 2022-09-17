@@ -34,7 +34,7 @@ describe("When the user visits the application", () => {
     });
   });
 
-  describe.only("unsuccessfully", () => {
+  describe("unsuccessfully", () => {
     describe("on network error", () => {
       beforeEach(() => {
         cy.intercept("GET", "**/api/people", {
